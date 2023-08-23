@@ -13,6 +13,7 @@ import android.view.Surface;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.MediaItem;
@@ -76,7 +77,10 @@ final class VideoPlayer {
     this.textureEntry = textureEntry;
     this.options = options;
 
-    ExoPlayer exoPlayer = new ExoPlayer.Builder(context).build();
+    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(context);
+    renderersFactory.setEnableDecoderFallback(true);
+    renderersFactory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+    ExoPlayer exoPlayer = new ExoPlayer.Builder(context, renderersFactory).build();
     Uri uri = Uri.parse(dataSource);
 
     buildHttpDataSourceFactory(httpHeaders);
